@@ -1,19 +1,19 @@
-import { PrismaClient } from "../prisma/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "../prisma/generated/prisma/client";
 
 declare global {
-  var prisma: PrismaClient | undefined;
+	var prisma: PrismaClient | undefined;
 }
 
 export class createPrisma {
-  private prisma: PrismaClient;
+	private prisma: PrismaClient;
 
-  constructor(connectionString: string) {
-    if (!globalThis.prisma) {
-      const adapter = new PrismaPg({ connectionString });
-      const prisma = new PrismaClient({ adapter });
-      globalThis.prisma = prisma;
-    }
-    this.prisma = globalThis.prisma;
-  }
+	constructor(connectionString: string) {
+		if (!globalThis.prisma) {
+			const adapter = new PrismaPg({ connectionString });
+			const prisma = new PrismaClient({ adapter });
+			globalThis.prisma = prisma;
+		}
+		this.prisma = globalThis.prisma;
+	}
 }

@@ -1,22 +1,22 @@
 {
-  "name": "@canvio/env",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "exports": {
-    "./*": "./src/*.ts",
-    ".": "./src/index.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "@repo/typescript-config": "*",
-    "@types/node": "^25.5.0"
-  },
-  "dependencies": {
-    "@t3-oss/env-core": "^0.13.11",
-    "zod": "^4.3.6"
-  }
+	"name": "@canvio/env",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"exports": {
+		"./*": "./src/*.ts",
+		".": "./src/index.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"devDependencies": {
+		"@repo/typescript-config": "*",
+		"@types/node": "^25.5.0"
+	},
+	"dependencies": {
+		"@t3-oss/env-core": "^0.13.11",
+		"zod": "^4.3.6"
+	}
 }
