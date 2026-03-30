@@ -15,6 +15,7 @@
     "prepare": "bun run --filter @canvio/database db:generate"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.9",
     "prettier": "^3.7.4",
     "turbo": "^2.8.21",
     "typescript": "5.9.2"

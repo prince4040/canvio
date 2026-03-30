@@ -1,8 +1,8 @@
-import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { appRouter } from "@canvio/trpc";
+import { createHTTPServer } from "@trpc/server/adapters/standalone";
 
 const server = createHTTPServer({
-  router: appRouter,
+	router: appRouter,
 });
 
 server.listen(3001);
