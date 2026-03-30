@@ -1,6 +1,6 @@
 pre-commit:
   commands:
-    check:
+    lint-format:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
       run: bunx @biomejs/biome check --write --files-ignore-unknown=true {staged_files}
       stage_fixed: true
