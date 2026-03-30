@@ -1,6 +1,6 @@
 import { publicProcedure, router } from "./trpc";
 
-const appRouter = router({
+export const appRouter = router({
   health: publicProcedure.query(() => {
     return "healthy";
   }),
