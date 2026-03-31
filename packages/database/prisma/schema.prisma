@@ -12,7 +12,75 @@ datasource db {
   provider = "postgresql"
 }
 
-model User{
+model User {
   id String @id @default(uuid())
+  email String @unique
   name String?
+  password String
+
+  createdAt DateTime @default(now())
+
+  rooms UsersInRoom[]
+  shapes Shape[]
+  @@map("users")
+}
+
+model Room {
+  id String @id @default(uuid())
+  slug String @unique
+  name String?
+
+  createdAt DateTime @default(now())
+
+  users UsersInRoom[]
+  shapes Shape[]
+  @@map("rooms")
+}
+
+model UsersInRoom {
+  id String @id @default(uuid())
+  userId String
+  roomId String
+
+  role UserRole
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@map("usersInRoom")
+  @@index([userId])
+  @@index([roomId])
+  @@unique([userId, roomId])
+}
+
+model Shape {
+  id String @id @default(uuid())
+  type ShapeType
+
+  // RECTANGLE
+  startX Float?
+  startY Float?
+  width Float?
+  height Float?
+
+  createdAt DateTime @default(now())
+
+  userId String? //Many to one
+  roomId String //Many to one
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@map("shapes")
+  @@index([userId])
+  @@index([roomId])
+}
+
+enum ShapeType{
+  RECTANGLE
+}
+enum UserRole{
+  ADMIN
+  VIEWER
+  WRITER
 }
