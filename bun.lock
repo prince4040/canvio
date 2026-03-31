@@ -16,6 +16,7 @@
       "version": "1.0.0",
       "dependencies": {
         "@canvio/database": "*",
+        "@canvio/env": "*",
         "@trpc/server": "^11.16.0",
       },
       "devDependencies": {

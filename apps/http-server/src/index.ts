@@ -1,3 +1,5 @@
+import "@canvio/env/loader";
+import { httpEnv } from "@canvio/env/http-server";
 import { appRouter } from "@canvio/trpc";
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { createContext } from "./context";
@@ -7,4 +9,4 @@ const server = createHTTPServer({
 	createContext,
 });
 
-server.listen(3001);
+server.listen(httpEnv.HTTP_PORT);
