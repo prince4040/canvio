@@ -15,9 +15,10 @@
 	"license": "ISC",
 	"type": "commonjs",
 	"dependencies": {
-		"@trpc/server": "^11.16.0",
 		"@canvio/database": "*",
-		"@canvio/env": "*"
+		"@canvio/env": "*",
+		"@trpc/server": "^11.16.0",
+		"cookie": "^1.1.1"
 	},
 	"devDependencies": {
 		"@canvio/trpc": "*",
