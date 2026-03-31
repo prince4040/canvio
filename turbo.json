@@ -13,6 +13,11 @@
 		"check-types": {
 			"dependsOn": ["^check-types"]
 		},
+		"db:generate": {
+			"inputs": ["$TURBO_DEFAULT$", ".env*"],
+			"outputs": ["prisma/generated/**"],
+			"cache": true
+		},
 		"dev": {
 			"cache": false,
 			"persistent": true
