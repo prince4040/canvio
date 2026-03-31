@@ -1,0 +1,22 @@
+{
+	"name": "@canvio/util",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"type-check": "tsc --noEmit"
+	},
+	"exports": {
+		"./*": "./src/*.util.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"devDependencies": {
+		"@repo/typescript-config": "*"
+	},
+	"dependencies": {
+		"jose": "^6.2.2"
+	}
+}
