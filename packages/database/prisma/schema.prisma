@@ -20,7 +20,7 @@ model User {
 
   createdAt DateTime @default(now())
 
-  rooms UsersInRoom[]
+  membership UsersInRoom[]
   shapes Shape[]
   @@map("users")
 }
@@ -32,7 +32,7 @@ model Room {
 
   createdAt DateTime @default(now())
 
-  users UsersInRoom[]
+  membership UsersInRoom[]
   shapes Shape[]
   @@map("rooms")
 }
