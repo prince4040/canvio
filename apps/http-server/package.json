@@ -18,7 +18,8 @@
 		"@canvio/database": "*",
 		"@canvio/env": "*",
 		"@trpc/server": "^11.16.0",
-		"cookie": "^1.1.1"
+		"cookie": "^1.1.1",
+		"@canvio/util": "*"
 	},
 	"devDependencies": {
 		"@canvio/trpc": "*",
