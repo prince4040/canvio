@@ -16,4 +16,10 @@ export class createPrisma {
 		}
 		this.prisma = globalThis.prisma;
 	}
+
+	getPrisma() {
+		return this.prisma;
+	}
 }
+
+export type { PrismaClient };
