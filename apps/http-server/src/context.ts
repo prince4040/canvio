@@ -1,6 +1,7 @@
+import { serverEnv } from "@canvio/env/server";
 import { createContextInner } from "@canvio/trpc/context";
 import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
-import { parse } from "cookie";
+import { parse, serialize } from "cookie";
 import { prisma } from "./prisma";
 import { JwtService, withCatch } from "./utils";
 
@@ -18,8 +19,20 @@ export async function createContext(opts: CreateHTTPContextOptions) {
 		role = jwtResult?.payload.role;
 	}
 
+	const setCookie = (key: string, value: string) => {
+		const cookie = serialize(key, value, {
+			httpOnly: true,
+			secure: serverEnv.NODE_ENV === "production",
+			sameSite: "lax",
+			path: "/",
+			maxAge: 60 * 60 * 24 * 7,
+		});
+		opts.res.setHeader("Set-Cookie", cookie);
+	};
+
 	return createContextInner({
 		prisma,
+		setCookie,
 		...(userId && role
 			? {
 					user: {

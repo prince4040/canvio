@@ -6,16 +6,22 @@ type createContextInnerOpts = {
 		id: string;
 		role: "admin" | "viewer" | "writer";
 	} | null;
+	setCookie?: (key: string, value: string) => void;
 };
 
-export async function createContextInner(opts: createContextInnerOpts) {
+export async function createContextInner({
+	prisma,
+	user,
+	setCookie = () => {},
+}: createContextInnerOpts) {
 	return {
-		prisma: opts.prisma,
-		...(opts.user
+		prisma: prisma,
+		setCookie,
+		...(user
 			? {
 					user: {
-						id: opts.user.id,
-						role: opts.user.role,
+						id: user.id,
+						role: user.role,
 					},
 				}
 			: {
