@@ -1,10 +1,10 @@
-import type { signupSchemaType } from "@canvio/util/auth";
+import type { SignupSchemaType } from "@canvio/util/auth";
 import { withCatch } from "@canvio/util/withCatch";
 import { TRPCError } from "@trpc/server";
 import type { ContextInnerType } from "../../context";
 
 export async function signupService(
-	input: signupSchemaType,
+	input: SignupSchemaType,
 	ctx: ContextInnerType,
 ) {
 	const [userError, userResult] = await withCatch(

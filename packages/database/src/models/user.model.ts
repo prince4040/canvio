@@ -1,4 +1,4 @@
-import type { signupSchemaType } from "@canvio/util/auth";
+import type { SignupSchemaType } from "@canvio/util/auth";
 import { Model } from "./base.model";
 
 export class UserModel extends Model {
@@ -10,7 +10,7 @@ export class UserModel extends Model {
 		});
 	}
 
-	createUser(user: signupSchemaType) {
+	createUser(user: SignupSchemaType) {
 		return this.prisma.user.create({
 			data: {
 				...user,
