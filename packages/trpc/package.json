@@ -16,9 +16,10 @@
 	"license": "ISC",
 	"type": "commonjs",
 	"dependencies": {
+		"@canvio/database": "*",
 		"@trpc/server": "^11.16.0",
 		"zod": "^4.3.6",
-		"@canvio/database": "*"
+		"@canvio/util": "*"
 	},
 	"devDependencies": {
 		"@repo/typescript-config": "*"

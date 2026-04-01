@@ -1,7 +1,7 @@
-import type { PrismaClient } from "@canvio/database";
+import type { createPrisma } from "@canvio/database";
 
 type createContextInnerOpts = {
-	prisma: PrismaClient;
+	db: createPrisma;
 	user: {
 		id: string;
 		role: "admin" | "viewer" | "writer";
@@ -10,12 +10,12 @@ type createContextInnerOpts = {
 };
 
 export async function createContextInner({
-	prisma,
+	db,
 	user,
 	setCookie = () => {},
 }: createContextInnerOpts) {
 	return {
-		prisma: prisma,
+		db,
 		setCookie,
 		...(user
 			? {
@@ -30,4 +30,4 @@ export async function createContextInner({
 	};
 }
 
-export type createContextInner = Awaited<ReturnType<typeof createContextInner>>;
+export type contextInnerType = Awaited<ReturnType<typeof createContextInner>>;

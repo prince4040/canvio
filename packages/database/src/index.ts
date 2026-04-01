@@ -1,5 +1,6 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../prisma/generated/prisma/client";
+import { UserModel } from "./models/user.model";
 
 declare global {
 	var prisma: PrismaClient | undefined;
@@ -7,6 +8,7 @@ declare global {
 
 export class createPrisma {
 	private prisma: PrismaClient;
+	public user: UserModel;
 
 	constructor(connectionString: string) {
 		if (!globalThis.prisma) {
@@ -15,6 +17,7 @@ export class createPrisma {
 			globalThis.prisma = prisma;
 		}
 		this.prisma = globalThis.prisma;
+		this.user = new UserModel(this.prisma);
 	}
 
 	getPrisma() {

@@ -2,7 +2,7 @@ import { serverEnv } from "@canvio/env/server";
 import { createContextInner } from "@canvio/trpc/context";
 import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
 import { parse, serialize } from "cookie";
-import { prisma } from "./prisma";
+import { db } from "./prisma";
 import { JwtService, withCatch } from "./utils";
 
 export async function createContext(opts: CreateHTTPContextOptions) {
@@ -31,7 +31,7 @@ export async function createContext(opts: CreateHTTPContextOptions) {
 	};
 
 	return createContextInner({
-		prisma,
+		db,
 		setCookie,
 		...(userId && role
 			? {
