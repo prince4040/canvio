@@ -1,6 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
-import type { contextInnerType } from "./context";
+import type { ContextInnerType } from "./context";
 
 export function isJSONparsable(input: string) {
 	try {
@@ -10,7 +10,7 @@ export function isJSONparsable(input: string) {
 	}
 }
 
-const t = initTRPC.context<contextInnerType>().create({
+const t = initTRPC.context<ContextInnerType>().create({
 	errorFormatter: (opts) => {
 		const { shape, error } = opts;
 

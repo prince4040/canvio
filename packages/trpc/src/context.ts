@@ -19,4 +19,4 @@ export function createContextInner({
 	return { db, setCookie, user, signJwt };
 }
 
-export type contextInnerType = ReturnType<typeof createContextInner>;
+export type ContextInnerType = ReturnType<typeof createContextInner>;
