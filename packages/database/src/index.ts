@@ -7,8 +7,8 @@ declare global {
 }
 
 export class PrismaService {
-	private prisma: PrismaClient;
-	public user: UserModel;
+	private readonly prisma: PrismaClient;
+	public readonly user: UserModel;
 
 	constructor(connectionString: string) {
 		if (!globalThis.prisma) {

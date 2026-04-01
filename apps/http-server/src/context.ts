@@ -1,9 +1,14 @@
 import { serverEnv } from "@canvio/env/server";
 import { createContextInner } from "@canvio/trpc/context";
+import type { JwtPayload } from "@canvio/util/common/types";
 import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
 import { parse, serialize } from "cookie";
 import { db } from "./prisma";
 import { JwtService, withCatch } from "./utils";
+
+function signJwt(payload: JwtPayload) {
+	return JwtService.generate(payload);
+}
 
 export async function createContext(opts: CreateHTTPContextOptions) {
 	const parsedCookies = parse(String(opts.req.headers.cookie));
@@ -33,6 +38,7 @@ export async function createContext(opts: CreateHTTPContextOptions) {
 	return createContextInner({
 		db,
 		setCookie,
+		signJwt,
 		...(userId && role
 			? {
 					user: {

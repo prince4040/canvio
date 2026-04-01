@@ -1,14 +1,10 @@
 import { serverEnv } from "@canvio/env/server";
+import type { JwtPayload } from "@canvio/util/common/types";
 import { JwtUtil } from "@canvio/util/jwt";
 
 export { withCatch } from "@canvio/util/withCatch";
 
-type UserRole = "admin" | "viewer" | "writer";
-
-export const JwtService = new JwtUtil<{
-	userId: string;
-	role: UserRole;
-}>({
+export const JwtService = new JwtUtil<JwtPayload>({
 	secret: serverEnv.JWT_SECRET,
 	issuer: "canvio",
 	expirationTime: "2d",
