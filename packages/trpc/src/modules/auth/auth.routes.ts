@@ -1,10 +1,10 @@
-import { zod } from "@canvio/util/zod";
+import { signupSchema } from "@canvio/util/auth";
 import { publicProcedure, router } from "../../trpc";
 import { signupService } from "./auth.service";
 
 export const authRouter = router({
 	signup: publicProcedure
-		.input(zod.signupSchema)
+		.input(signupSchema)
 		.mutation(async ({ input, ctx }) => {
 			const result = await signupService(input, ctx);
 

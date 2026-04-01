@@ -8,8 +8,7 @@
 	},
 	"exports": {
 		"./*": "./src/*.util.ts",
-		"./zod": "./src/zod/index.ts",
-		"./common/types": "./src/common/types/types.ts"
+		"./auth": "./src/modules/auth/index.ts"
 	},
 	"keywords": [],
 	"author": "",

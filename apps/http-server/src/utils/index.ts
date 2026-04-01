@@ -1,5 +1,5 @@
 import { serverEnv } from "@canvio/env/server";
-import type { JwtPayload } from "@canvio/util/common/types";
+import type { JwtPayload } from "@canvio/util/auth";
 import { JwtUtil } from "@canvio/util/jwt";
 
 export { withCatch } from "@canvio/util/withCatch";

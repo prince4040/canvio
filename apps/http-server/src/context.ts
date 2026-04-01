@@ -1,6 +1,6 @@
 import { serverEnv } from "@canvio/env/server";
 import { createContextInner } from "@canvio/trpc/context";
-import type { JwtPayload } from "@canvio/util/common/types";
+import type { JwtPayload } from "@canvio/util/auth";
 import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
 import { parse, serialize } from "cookie";
 import { db } from "./prisma";

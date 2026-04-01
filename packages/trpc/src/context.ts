@@ -1,5 +1,5 @@
 import type { PrismaService } from "@canvio/database";
-import type { JwtPayload } from "@canvio/util/common/types";
+import type { JwtPayload } from "@canvio/util/auth";
 
 type CreateContextInnerOpts = {
 	db: PrismaService;
