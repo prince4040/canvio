@@ -1,7 +1,7 @@
-import { createPrisma } from "@canvio/database";
+import { PrismaService } from "@canvio/database";
 import { serverEnv } from "@canvio/env/server";
 
-const prismaObject = new createPrisma(serverEnv.DATABASE_URL);
+const prismaService = new PrismaService(serverEnv.DATABASE_URL);
 
-export const prisma = prismaObject.getPrisma();
-export const db = prismaObject;
+export const prisma = prismaService.getPrisma();
+export const db = prismaService;

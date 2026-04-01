@@ -6,7 +6,7 @@ declare global {
 	var prisma: PrismaClient | undefined;
 }
 
-export class createPrisma {
+export class PrismaService {
 	private prisma: PrismaClient;
 	public user: UserModel;
 
