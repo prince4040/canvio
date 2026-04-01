@@ -7,8 +7,6 @@ export async function signupService(
 	input: zod.signupType,
 	ctx: contextInnerType,
 ) {
-	const { email, name, password } = input;
-
 	const [userError, userResult] = await withCatch(
 		ctx.db.user.createUser(input),
 	);
@@ -19,4 +17,15 @@ export async function signupService(
 			message: "user already exists",
 		});
 	}
+
+	const token = await ctx.signJwt({
+		userId: userResult.id,
+	});
+
+	const { password, ...safeUser } = userResult;
+
+	return {
+		user: safeUser,
+		token,
+	};
 }

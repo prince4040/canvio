@@ -1,11 +1,10 @@
 import type { PrismaService } from "@canvio/database";
-import type { JwtPayload, UserRole } from "@canvio/util/common/types";
+import type { JwtPayload } from "@canvio/util/common/types";
 
 type CreateContextInnerOpts = {
 	db: PrismaService;
 	user: {
 		id: string;
-		role: UserRole;
 	} | null;
 	setCookie?: (key: string, value: string) => void;
 	signJwt: (payload: JwtPayload) => Promise<string>;

@@ -15,13 +15,13 @@ export async function createContext(opts: CreateHTTPContextOptions) {
 	const token = parsedCookies.token;
 
 	let userId = null;
-	let role = null;
+	// let role = null;
 
 	if (token) {
 		const [_, jwtResult] = await withCatch(JwtService.verify(token));
 
 		userId = jwtResult?.payload.userId;
-		role = jwtResult?.payload.role;
+		// role = jwtResult?.payload.role;
 	}
 
 	const setCookie = (key: string, value: string) => {
@@ -39,11 +39,10 @@ export async function createContext(opts: CreateHTTPContextOptions) {
 		db,
 		setCookie,
 		signJwt,
-		...(userId && role
+		...(userId
 			? {
 					user: {
 						id: userId,
-						role,
 					},
 				}
 			: {
