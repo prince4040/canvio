@@ -1,3 +1,4 @@
+import { DBErrorClient } from "@canvio/database";
 import type { SigninSchemaType, SignupSchemaType } from "@canvio/util/auth";
 import { withCatch } from "@canvio/util/withCatch";
 import { TRPCError } from "@trpc/server";
@@ -9,9 +10,11 @@ export async function signupService(
 ) {
 	const [userError, userResult] = await withCatch(
 		ctx.db.user.createUser(input),
+		[DBErrorClient],
 	);
 
 	if (userError) {
+		console.log("error", userError);
 		throw new TRPCError({
 			code: "CONFLICT",
 			message: "user already exists",

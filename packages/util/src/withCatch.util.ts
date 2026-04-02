@@ -6,7 +6,7 @@
     return type Promise<[instanceType<constrctor>, awaited<Promise>]>
 */
 
-type ErrorConstructor = new (...args: unknown[]) => Error;
+type ErrorConstructor = new (...args: any[]) => Error;
 
 export async function withCatch<T, E extends readonly ErrorConstructor[]>(
 	promise: Promise<T>,
