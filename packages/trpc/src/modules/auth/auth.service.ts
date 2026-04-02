@@ -1,4 +1,4 @@
-import { DBErrorClient } from "@canvio/database";
+import { DBErrorClient, DBErrorServer } from "@canvio/database";
 import type { SigninSchemaType, SignupSchemaType } from "@canvio/util/auth";
 import { withCatch } from "@canvio/util/withCatch";
 import { TRPCError } from "@trpc/server";
@@ -10,7 +10,7 @@ export async function signupService(
 ) {
 	const [userError, userResult] = await withCatch(
 		ctx.db.user.createUser(input),
-		[DBErrorClient],
+		[DBErrorClient, DBErrorServer],
 	);
 
 	if (userError) {

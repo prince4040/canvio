@@ -6,11 +6,11 @@ export class DBError extends Error {
 	public code: DBErrorCode;
 	public prismaCode: string | undefined;
 	public httpStatus: number;
-	public type: "server" | "client";
+	// public type: "server" | "client";
 
 	constructor({
 		message,
-		type,
+		// type,
 		prismaError,
 		code,
 		httpStatus,
@@ -20,7 +20,7 @@ export class DBError extends Error {
 		this.name = this.constructor.name;
 		this.rawMessage = prismaError.message;
 		this.prismaCode = (prismaError as { code?: string }).code;
-		this.type = type;
+		// this.type = type;
 		this.code = code;
 		this.httpStatus = httpStatus;
 		this.prismaError = prismaError;

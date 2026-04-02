@@ -9,7 +9,6 @@ export type PrismaError =
 
 export type DbErrorArgument = {
 	message: string;
-	type: "server" | "client";
 	code: DBErrorCode;
 	httpStatus: number;
 	prismaError: PrismaError;
