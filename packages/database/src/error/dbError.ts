@@ -1,9 +1,9 @@
-import type { DbErrorArgument, PrismaError } from "./types";
+import type { DBErrorCode, DbErrorArgument, PrismaError } from "./types";
 
 export class DBError extends Error {
 	public rawMessage: string;
 	public prismaError: PrismaError;
-	public code: string;
+	public code: DBErrorCode;
 	public prismaCode: string | undefined;
 	public httpStatus: number;
 	public type: "server" | "client";

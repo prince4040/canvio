@@ -1,6 +1,7 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import type { PrismaClient } from "../prisma/generated/prisma/client";
 import { type ExtendedPrismaClient, initPrismaClient } from "./config/client";
+import type { DBErrorCode } from "./error/types";
 import { UserModel } from "./models/user.model";
 
 declare global {
@@ -31,4 +32,4 @@ export { DBError } from "./error/dbError";
 export { DBErrorClient } from "./error/dbErrorClient";
 export { DBErrorServer } from "./error/dbErrorServer";
 export { prismaErrorHandler } from "./error/prismaErrorHandler";
-export type { ExtendedPrismaClient, PrismaClient };
+export type { DBErrorCode, ExtendedPrismaClient, PrismaClient };
