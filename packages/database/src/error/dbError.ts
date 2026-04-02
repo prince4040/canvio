@@ -16,6 +16,8 @@ export class DBError extends Error {
 		httpStatus,
 	}: DbErrorArgument) {
 		super(message);
+		Object.setPrototypeOf(this, new.target.prototype);
+		this.name = this.constructor.name;
 		this.rawMessage = prismaError.message;
 		this.prismaCode = (prismaError as { code?: string }).code;
 		this.type = type;

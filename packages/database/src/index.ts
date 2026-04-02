@@ -30,4 +30,5 @@ export class PrismaService {
 export { DBError } from "./error/dbError";
 export { DBErrorClient } from "./error/dbErrorClient";
 export { DBErrorServer } from "./error/dbErrorServer";
+export { prismaErrorHandler } from "./error/prismaErrorHandler";
 export type { ExtendedPrismaClient, PrismaClient };
