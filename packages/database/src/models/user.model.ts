@@ -10,6 +10,14 @@ export class UserModel extends Model {
 		});
 	}
 
+	getUserByEmail(email: string) {
+		return this.prisma.user.findFirst({
+			where: {
+				email,
+			},
+		});
+	}
+
 	createUser(user: SignupSchemaType) {
 		return this.prisma.user.create({
 			data: {

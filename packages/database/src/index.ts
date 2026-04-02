@@ -13,7 +13,10 @@ export class PrismaService {
 	constructor(connectionString: string) {
 		if (!globalThis.prisma) {
 			const adapter = new PrismaPg({ connectionString });
-			const prisma = new PrismaClient({ adapter });
+			const prisma = new PrismaClient({
+				adapter,
+				errorFormat: "minimal",
+			});
 			globalThis.prisma = prisma;
 		}
 		this.prisma = globalThis.prisma;
