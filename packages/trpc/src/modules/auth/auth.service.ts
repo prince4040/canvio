@@ -10,11 +10,10 @@ export async function signupService(
 ) {
 	const [userError, userResult] = await withCatch(
 		ctx.db.user.createUser(input),
-		[DBErrorClient, DBErrorServer],
+		[DBErrorClient],
 	);
 
 	if (userError) {
-		console.log("error", userError);
 		throw new TRPCError({
 			code: "CONFLICT",
 			message: "user already exists",
