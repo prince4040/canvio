@@ -1,4 +1,4 @@
-import { DBErrorClient, DBErrorServer } from "@canvio/database";
+import { DBErrorClient } from "@canvio/database";
 import type { SigninSchemaType, SignupSchemaType } from "@canvio/util/auth";
 import { withCatch } from "@canvio/util/withCatch";
 import { TRPCError } from "@trpc/server";
