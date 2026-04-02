@@ -6,6 +6,7 @@
     return type Promise<[instanceType<constrctor>, awaited<Promise>]>
 */
 
+// biome-ignore lint/suspicious/noExplicitAny: needed
 type ErrorConstructor = new (...args: any[]) => Error;
 
 export async function withCatch<T, E extends readonly ErrorConstructor[]>(
