@@ -11,6 +11,7 @@ export function isJSONparsable(input: string) {
 }
 
 const t = initTRPC.context<ContextInnerType>().create({
+	isDev: process.env.NODE_ENV !== "production",
 	errorFormatter: (opts) => {
 		const { shape, error } = opts;
 

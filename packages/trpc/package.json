@@ -22,6 +22,7 @@
 		"@canvio/util": "*"
 	},
 	"devDependencies": {
-		"@repo/typescript-config": "*"
+		"@repo/typescript-config": "*",
+		"@types/node": "^25.5.0"
 	}
 }
