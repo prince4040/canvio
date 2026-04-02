@@ -1,22 +1,21 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../prisma/generated/prisma/client";
+import type { PrismaClient } from "../prisma/generated/prisma/client";
+import { type ExtendedPrismaClient, initPrismaClient } from "./config/client";
 import { UserModel } from "./models/user.model";
 
 declare global {
-	var prisma: PrismaClient | undefined;
+	var prisma: ExtendedPrismaClient | undefined;
 }
 
 export class PrismaService {
-	private readonly prisma: PrismaClient;
+	private readonly prisma: ExtendedPrismaClient;
 	public readonly user: UserModel;
 
 	constructor(connectionString: string) {
 		if (!globalThis.prisma) {
 			const adapter = new PrismaPg({ connectionString });
-			const prisma = new PrismaClient({
-				adapter,
-				errorFormat: "minimal",
-			});
+			const prisma = initPrismaClient(adapter);
+
 			globalThis.prisma = prisma;
 		}
 		this.prisma = globalThis.prisma;
@@ -28,4 +27,7 @@ export class PrismaService {
 	}
 }
 
-export type { PrismaClient };
+export { DBError } from "./error/dbError";
+export { DBErrorClient } from "./error/dbErrorClient";
+export { DBErrorServer } from "./error/dbErrorServer";
+export type { ExtendedPrismaClient, PrismaClient };

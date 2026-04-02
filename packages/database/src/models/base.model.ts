@@ -1,9 +1,9 @@
-import type { PrismaClient } from "../../prisma/generated/prisma/client";
+import type { ExtendedPrismaClient } from "../config/client";
 
 export class Model {
-	protected prisma: PrismaClient;
+	protected prisma: ExtendedPrismaClient;
 
-	constructor(prisma: PrismaClient) {
+	constructor(prisma: ExtendedPrismaClient) {
 		this.prisma = prisma;
 	}
 }
