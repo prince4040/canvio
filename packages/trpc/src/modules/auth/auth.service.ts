@@ -2,7 +2,7 @@ import { DBErrorClient } from "@canvio/database";
 import type { SigninSchemaType, SignupSchemaType } from "@canvio/util/auth";
 import { withCatch } from "@canvio/util/withCatch";
 import { TRPCError } from "@trpc/server";
-import type { ContextInnerType } from "../../context";
+import type { ContextInnerType } from "../../config/context";
 
 export async function signupService(
 	input: SignupSchemaType,

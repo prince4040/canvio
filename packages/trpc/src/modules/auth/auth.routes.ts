@@ -1,5 +1,5 @@
 import { signinSchema, signupSchema } from "@canvio/util/auth";
-import { publicProcedure, router } from "../../trpc";
+import { publicProcedure, router } from "../../config/trpc";
 import { signinService, signupService } from "./auth.service";
 
 export const authRouter = router({

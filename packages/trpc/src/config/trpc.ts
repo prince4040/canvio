@@ -1,6 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import type { ContextInnerType } from "./context";
-import { buildErrorFormatter } from "./errorFormatter";
+import type { ContextInnerType } from "../config/context";
+import { buildErrorFormatter } from "../errorFormatter";
 
 export function isJSONparsable(input: string) {
 	try {

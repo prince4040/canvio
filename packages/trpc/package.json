@@ -8,7 +8,7 @@
 		"check-types": "tsc --noEmit"
 	},
 	"exports": {
-		"./*": "./src/*.ts",
+		"./context": "./src/config/context.ts",
 		".": "./src/index.ts"
 	},
 	"keywords": [],
