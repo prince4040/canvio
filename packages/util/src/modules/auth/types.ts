@@ -1,7 +1,7 @@
 import type { z } from "zod";
-import type { signinSchema, signupSchema } from "./schema";
+import type { signinSchema, signupSchema, UserRole } from "./schema";
 
-export type UserRole = "admin" | "viewer" | "writer";
+export type UserRoleType = z.infer<typeof UserRole>;
 
 export type JwtPayload = {
 	userId: string;

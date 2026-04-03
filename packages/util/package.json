@@ -8,7 +8,8 @@
 	},
 	"exports": {
 		"./*": "./src/*.util.ts",
-		"./auth": "./src/modules/auth/index.ts"
+		"./auth": "./src/modules/auth/index.ts",
+		"./room": "./src/modules/room/index.ts"
 	},
 	"keywords": [],
 	"author": "",

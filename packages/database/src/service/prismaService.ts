@@ -1,5 +1,6 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { type ExtendedPrismaClient, initPrismaClient } from "../config/client";
+import { RoomModel } from "../models/room.model";
 import { UserModel } from "../models/user.model";
 
 declare global {
@@ -9,6 +10,7 @@ declare global {
 export class PrismaService {
 	private readonly prisma: ExtendedPrismaClient;
 	public readonly user: UserModel;
+	public readonly room: RoomModel;
 
 	constructor(connectionString: string) {
 		if (!globalThis.prisma) {
@@ -19,6 +21,7 @@ export class PrismaService {
 		}
 		this.prisma = globalThis.prisma;
 		this.user = new UserModel(this.prisma);
+		this.room = new RoomModel(this.prisma);
 	}
 
 	getPrisma() {
