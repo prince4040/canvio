@@ -36,18 +36,7 @@ export async function signinService(
 	input: SigninSchemaType,
 	ctx: ContextInnerType,
 ) {
-	const [userError, userResult] = await withCatch(
-		ctx.db.user.getUserByEmail(input.email),
-	);
-
-	console.log(userError, userResult);
-
-	if (userError) {
-		throw new TRPCError({
-			code: "INTERNAL_SERVER_ERROR",
-			message: "Something went wrong on server",
-		});
-	}
+	const userResult = await ctx.db.user.getUserByEmail(input.email);
 
 	if (!userResult) {
 		throw new TRPCError({
