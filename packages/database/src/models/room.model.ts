@@ -27,4 +27,26 @@ export class RoomModel extends Model {
 			},
 		});
 	}
+
+	removeMember(userId: string, roomId: string) {
+		return this.prisma.usersInRoom.delete({
+			where: {
+				userId_roomId: {
+					userId: userId,
+					roomId: roomId,
+				},
+			},
+		});
+	}
+
+	getUserInRoom(userId: string, roomId: string) {
+		return this.prisma.usersInRoom.findUnique({
+			where: {
+				userId_roomId: {
+					userId,
+					roomId,
+				},
+			},
+		});
+	}
 }

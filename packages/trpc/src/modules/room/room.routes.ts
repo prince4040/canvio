@@ -1,6 +1,14 @@
-import { addMemberSchema, createRoomSchema } from "@canvio/util/room";
+import {
+	addMemberSchema,
+	createRoomSchema,
+	removeMemberSchema,
+} from "@canvio/util/room";
 import { authedProcedure, router } from "../../config/trpc";
-import { addMemberService, createRoomService } from "./room.service";
+import {
+	addMemberService,
+	createRoomService,
+	removeMemberService,
+} from "./room.service";
 
 export const roomRouter = router({
 	create: authedProcedure
@@ -31,6 +39,17 @@ export const roomRouter = router({
 					},
 					role: result.role,
 				},
+			};
+		}),
+
+	removeMember: authedProcedure
+		.input(removeMemberSchema)
+		.mutation(async ({ input, ctx }) => {
+			await removeMemberService(input, ctx);
+
+			return {
+				sucess: true,
+				message: "member removed from the room",
 			};
 		}),
 });

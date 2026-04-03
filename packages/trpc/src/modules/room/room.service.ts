@@ -2,6 +2,7 @@ import { DBErrorClient } from "@canvio/database";
 import type {
 	addMemberSchemaType,
 	CreateRoomSchemaType,
+	removeMenmberSchemaType,
 } from "@canvio/util/room";
 import { withCatch } from "@canvio/util/withCatch";
 import { TRPCError } from "@trpc/server";
@@ -67,5 +68,55 @@ export async function addMemberService(
 		userId: result.userId,
 		roomId: result.roomId,
 		role: role,
+	};
+}
+
+export async function removeMemberService(
+	input: removeMenmberSchemaType,
+	ctx: ContextInnerType,
+) {
+	const userId = ctx.user?.id;
+	const roomId = input.roomId;
+
+	if (!userId) {
+		throw new TRPCError({
+			code: "FORBIDDEN",
+		});
+	}
+
+	const [userError, userResult] = await withCatch(
+		ctx.db.room.getUserInRoom(userId, roomId),
+		[DBErrorClient],
+	);
+
+	if (userError || userResult == null) {
+		throw new TRPCError({
+			code: "BAD_REQUEST",
+			message: userError?.message || "user is not part of the room",
+		});
+	}
+
+	if (userResult.role !== "ADMIN") {
+		throw new TRPCError({
+			code: "UNAUTHORIZED",
+			message: "user is not authorised to perform this action",
+		});
+	}
+
+	const [error, result] = await withCatch(
+		ctx.db.room.removeMember(userId, roomId),
+		[DBErrorClient],
+	);
+
+	if (error) {
+		throw new TRPCError({
+			code: "BAD_REQUEST",
+			message: error.message,
+		});
+	}
+
+	return {
+		userId,
+		roomId: result.roomId,
 	};
 }

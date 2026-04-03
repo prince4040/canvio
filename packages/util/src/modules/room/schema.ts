@@ -9,3 +9,7 @@ export const addMemberSchema = z.object({
 	role: UserRole,
 	roomId: z.string(),
 });
+
+export const removeMemberSchema = z.object({
+	roomId: z.string(),
+});
