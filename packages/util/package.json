@@ -9,7 +9,8 @@
 	"exports": {
 		"./*": "./src/*.util.ts",
 		"./auth": "./src/modules/auth/index.ts",
-		"./room": "./src/modules/room/index.ts"
+		"./room": "./src/modules/room/index.ts",
+		"./canvas": "./src/modules/canvas/index.ts"
 	},
 	"keywords": [],
 	"author": "",
