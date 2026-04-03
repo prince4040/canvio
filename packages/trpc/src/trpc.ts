@@ -1,6 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import { ZodError } from "zod";
 import type { ContextInnerType } from "./context";
+import { buildErrorFormatter } from "./errorFormatter";
 
 export function isJSONparsable(input: string) {
 	try {
@@ -12,30 +12,7 @@ export function isJSONparsable(input: string) {
 
 const t = initTRPC.context<ContextInnerType>().create({
 	isDev: process.env.NODE_ENV !== "production",
-	errorFormatter: (opts) => {
-		const { shape, error } = opts;
-
-		const parsedMessage = isJSONparsable(shape.message);
-		return {
-			...shape,
-			...(parsedMessage
-				? {
-						detailed: parsedMessage,
-					}
-				: {}),
-			message:
-				parsedMessage && typeof parsedMessage === "object"
-					? parsedMessage[0]?.message
-					: shape.message,
-			data: {
-				zodError:
-					error.code === "BAD_REQUEST" &&
-					error.cause instanceof ZodError
-						? error?.cause?.flatten()
-						: null,
-			},
-		};
-	},
+	errorFormatter: buildErrorFormatter,
 });
 
 export const router = t.router;
