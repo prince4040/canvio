@@ -4,4 +4,4 @@ import { WebSocketServer } from "ws";
 
 const wss = new WebSocketServer({ port: wsEnv.WS_PORT });
 
-// wss.on("connection", (socket) => {});
+wss.on("connection", (socket) => {});
