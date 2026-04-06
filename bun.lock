@@ -55,6 +55,7 @@
       "dependencies": {
         "@canvio/database": "*",
         "@canvio/env": "*",
+        "cookie": "^1.1.1",
         "ws": "^8.20.0",
       },
       "devDependencies": {

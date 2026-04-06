@@ -22,8 +22,9 @@
 		"typescript": "^6.0.2"
 	},
 	"dependencies": {
-		"ws": "^8.20.0",
 		"@canvio/database": "*",
-		"@canvio/env": "*"
+		"@canvio/env": "*",
+		"cookie": "^1.1.1",
+		"ws": "^8.20.0"
 	}
 }
