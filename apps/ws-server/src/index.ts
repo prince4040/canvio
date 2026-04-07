@@ -5,6 +5,7 @@ import { parse } from "cookie";
 import { WebSocketServer } from "ws";
 import { ConnectionManger } from "./service/connectionManager";
 import { JwtService } from "./utils";
+import "./store/data";
 
 const wss = new WebSocketServer({ port: wsEnv.WS_PORT });
 
