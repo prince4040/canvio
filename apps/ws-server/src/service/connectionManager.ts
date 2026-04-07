@@ -1,4 +1,5 @@
 import { withCatch } from "@canvio/util/withCatch";
+import { incomingMessageSchema } from "@canvio/util/ws";
 import type { WebSocket } from "ws";
 import type { UserId } from "../types";
 
@@ -19,6 +20,13 @@ export class ConnectionManger {
 			);
 
 			if (parseError) {
+				// TODO
+				return;
+			}
+
+			const parsedData = incomingMessageSchema.safeParse(data);
+
+			if (!parsedData.success) {
 				// TODO
 				return;
 			}
