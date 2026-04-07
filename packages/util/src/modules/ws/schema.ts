@@ -25,21 +25,22 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
 	leaveRoomSchema,
 ]);
 
-export const ErrorCodes = z
+export const errorCodes = z
 	.literal("ERR_UNAUTHORIZED")
 	.or(z.literal("ERR_VERSION_STALE"))
 	.or(z.literal("ERR_PAYLOAD_TOO_LARGE"))
 	.or(z.literal("ERR_ROOM_FULL"))
 	.or(z.literal("ERR_INVALID_FORMAT"));
 
+export const errorMessagePayloadSchema = z.object({
+	requestId: z.string().optional(),
+	code: errorCodes,
+	message: z.string().optional(),
+	currentVersion: z.number().positive().optional(),
+});
 export const errorMessageSchema = z.object({
 	type: z.literal("ERROR"),
-	payload: z.object({
-		requestId: z.string().optional(),
-		code: ErrorCodes,
-		message: z.string().optional(),
-		currentVersion: z.number().positive().optional(),
-	}),
+	payload: errorMessagePayloadSchema,
 });
 
 export const aknowlegementSchema = z.object({

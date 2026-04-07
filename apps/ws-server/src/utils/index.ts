@@ -9,3 +9,5 @@ export const JwtService = new JwtUtil<JwtPayload>({
 	issuer: "canvio",
 	expirationTime: "2d",
 });
+
+export * from "./predicate";

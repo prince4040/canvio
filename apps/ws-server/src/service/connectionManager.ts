@@ -1,7 +1,12 @@
 import { withCatch } from "@canvio/util/withCatch";
-import { incomingMessageSchema } from "@canvio/util/ws";
-import type { WebSocket } from "ws";
+import {
+	type ErrorMessagePayloadSchemaType,
+	type IncomingMessageSchemType,
+	incomingMessageSchema,
+} from "@canvio/util/ws";
+import { WebSocket } from "ws";
 import type { UserId } from "../types";
+import { isValidRequestId } from "../utils";
 
 export class ConnectionManger {
 	private socket: WebSocket;
@@ -18,18 +23,48 @@ export class ConnectionManger {
 			const [parseError, data] = await withCatch(
 				JSON.parse(rawData.toString()),
 			);
+			let requestId: string | undefined;
+
+			if (isValidRequestId(data)) {
+				requestId = data.payload.requestId;
+			}
 
 			if (parseError) {
-				// TODO
+				this.sendError({
+					code: "ERR_INVALID_FORMAT",
+					message: "invalid json format",
+					requestId,
+				});
 				return;
 			}
 
-			const parsedData = incomingMessageSchema.safeParse(data);
+			const parsedResult = incomingMessageSchema.safeParse(data);
 
-			if (!parsedData.success) {
-				// TODO
+			if (!parsedResult.success) {
+				this.sendError({
+					code: "ERR_INVALID_FORMAT",
+					message: parsedResult.error.message,
+					requestId,
+				});
 				return;
 			}
+
+			const parsedData = parsedResult.data;
+			this.handleIncomingMessage(parsedData);
 		});
+	}
+
+	private handleIncomingMessage(data: IncomingMessageSchemType) {
+		switch (data.type) {
+			case "ROOM.JOIN":
+				break;
+			case "ROOM.LEAVE":
+				break;
+		}
+	}
+
+	private sendError(payload: ErrorMessagePayloadSchemaType) {
+		if (this.socket.readyState !== WebSocket.OPEN) return;
+		this.socket.send(JSON.stringify(payload));
 	}
 }
