@@ -10,7 +10,8 @@
 		"./*": "./src/*.util.ts",
 		"./auth": "./src/modules/auth/index.ts",
 		"./room": "./src/modules/room/index.ts",
-		"./canvas": "./src/modules/canvas/index.ts"
+		"./canvas": "./src/modules/canvas/index.ts",
+		"./ws": "./src/modules/ws/index.ts"
 	},
 	"keywords": [],
 	"author": "",
