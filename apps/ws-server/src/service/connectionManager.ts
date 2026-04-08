@@ -1,11 +1,14 @@
+import type { UserRoleType } from "@canvio/util/auth";
 import { withCatch } from "@canvio/util/withCatch";
 import {
+	type AknowlegementSchemaType,
 	type ErrorMessagePayloadSchemaType,
 	type IncomingMessageSchemType,
 	incomingMessageSchema,
 	type JoinRoonSchemaType,
 } from "@canvio/util/ws";
 import { WebSocket } from "ws";
+import { db } from "../db";
 import { roomSockets, sockets, userSockets } from "./../store/data";
 import type { UserConnection, UserId } from "../types";
 import { isValidRequestId } from "../utils";
@@ -76,17 +79,18 @@ export class ConnectionManger {
 			}
 
 			const parsedData = parsedResult.data;
-			this.handleIncomingMessage(parsedData, socketId);
+			this.handleIncomingMessage(parsedData, socketId, requestId);
 		});
 	}
 
 	private handleIncomingMessage(
 		data: IncomingMessageSchemType,
 		socketId: string,
+		requestId?: string,
 	) {
 		switch (data.type) {
 			case "ROOM.JOIN":
-				this.handleJoinRoom(data, socketId);
+				this.handleJoinRoom(data, socketId, requestId);
 				break;
 			case "ROOM.LEAVE":
 				break;
@@ -101,13 +105,57 @@ export class ConnectionManger {
 		roomSockets.get(roomId)?.add(socketId);
 	}
 
-	private handleJoinRoom(data: JoinRoonSchemaType, socketId: string) {
+	private async handleJoinRoom(
+		data: JoinRoonSchemaType,
+		socketId: string,
+		requestId?: string,
+	) {
 		// TODO database check
+		const [error, result] = await withCatch(
+			db.room.getUserInRoom(this.userId, data.payload.roomId),
+		);
+		if (error) {
+			this.sendError({
+				code: "ERR_SOMETHING_WENT_WRONG",
+				requestId: data.meta?.requestId,
+			});
+			return;
+		}
+
+		if (!result) {
+			this.sendError({
+				code: "ERR_UNAUTHORIZED",
+				message: "user dont have access to this room",
+				requestId: data.meta?.requestId,
+			});
+			return;
+		}
+
 		this.addSocketToRoom(data.payload.roomId, socketId);
+		requestId && this.aknowledge(requestId);
 	}
 
 	private sendError(payload: ErrorMessagePayloadSchemaType) {
 		if (this.socket.readyState !== WebSocket.OPEN) return;
+		this.socket.send(JSON.stringify(payload));
+	}
+
+	private aknowledge(requestId: string) {
+		const payload: AknowlegementSchemaType = {
+			type: "ACK",
+			payload: {
+				success: true,
+				requestId,
+			},
+		};
+		this.sendMessage(payload);
+	}
+
+	private sendMessage(payload: object) {
+		if (this.socket.readyState !== WebSocket.OPEN) {
+			return;
+		}
+
 		this.socket.send(JSON.stringify(payload));
 	}
 }

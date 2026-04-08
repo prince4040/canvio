@@ -30,7 +30,8 @@ export const errorCodes = z
 	.or(z.literal("ERR_VERSION_STALE"))
 	.or(z.literal("ERR_PAYLOAD_TOO_LARGE"))
 	.or(z.literal("ERR_ROOM_FULL"))
-	.or(z.literal("ERR_INVALID_FORMAT"));
+	.or(z.literal("ERR_INVALID_FORMAT"))
+	.or(z.literal("ERR_SOMETHING_WENT_WRONG"));
 
 export const errorMessagePayloadSchema = z.object({
 	requestId: z.string().optional(),
