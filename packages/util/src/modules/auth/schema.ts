@@ -11,4 +11,4 @@ export const signinSchema = z.object({
 	password: z.string().min(6).max(30),
 });
 
-export const UserRole = z.enum(["admin", "viewer", "writer"]);
+export const UserRole = z.enum(["ADMIN", "VIEWER", "WRITER"]);

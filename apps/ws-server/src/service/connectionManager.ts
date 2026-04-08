@@ -29,7 +29,7 @@ export class ConnectionManger {
 			socketId,
 			userId: this.userId,
 			socket: this.socket,
-			rooms: new Set(),
+			rooms: new Map(),
 			isAlive: true,
 			createAt: new Date(),
 		};
@@ -97,12 +97,18 @@ export class ConnectionManger {
 		}
 	}
 
-	private addSocketToRoom(roomId: string, socketId: string) {
+	private addSocketToRoom(
+		roomId: string,
+		socketId: string,
+		role: UserRoleType,
+	) {
 		if (!roomSockets.has(roomId)) {
 			roomSockets.set(roomId, new Set());
 		}
 
 		roomSockets.get(roomId)?.add(socketId);
+
+		sockets.get(socketId)?.rooms.set(roomId, role);
 	}
 
 	private async handleJoinRoom(
@@ -110,7 +116,6 @@ export class ConnectionManger {
 		socketId: string,
 		requestId?: string,
 	) {
-		// TODO database check
 		const [error, result] = await withCatch(
 			db.room.getUserInRoom(this.userId, data.payload.roomId),
 		);
@@ -131,7 +136,9 @@ export class ConnectionManger {
 			return;
 		}
 
-		this.addSocketToRoom(data.payload.roomId, socketId);
+		const role = result.role;
+
+		this.addSocketToRoom(data.payload.roomId, socketId, role);
 		requestId && this.aknowledge(requestId);
 	}
 

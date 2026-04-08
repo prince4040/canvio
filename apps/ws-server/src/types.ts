@@ -1,3 +1,4 @@
+import type { UserRoleType } from "@canvio/util/auth";
 import type { WebSocket } from "ws";
 
 export type SocketId = string;
@@ -8,7 +9,7 @@ export type UserConnection = {
 	socketId: SocketId;
 	userId: UserId;
 	socket: WebSocket;
-	rooms: Set<RoomId>;
+	rooms: Map<RoomId, UserRoleType>;
 	isAlive: boolean;
 	createAt: Date;
 };
