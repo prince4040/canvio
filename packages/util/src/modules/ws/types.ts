@@ -2,12 +2,15 @@ import type { z } from "zod";
 import type {
 	aknowlegementSchema,
 	baseMeta,
+	createShapeSchema,
 	errorCodes,
 	errorMessagePayloadSchema,
 	errorMessageSchema,
 	incomingMessageSchema,
 	joinRoonSchema,
 	leaveRoomSchema,
+	rectanglePayloadSchema,
+	shapePayloadMetaSchema,
 } from "./schema";
 
 export type BaseMeta = z.infer<typeof baseMeta>;
@@ -27,3 +30,9 @@ export type AknowlegementSchemaType = z.infer<typeof aknowlegementSchema>;
 export type ErrorMessagePayloadSchemaType = z.infer<
 	typeof errorMessagePayloadSchema
 >;
+
+export type shapePayloadMetaSchemaType = z.infer<typeof shapePayloadMetaSchema>;
+
+export type rectanglePayloadSchemaType = z.infer<typeof rectanglePayloadSchema>;
+
+export type createShapeSchemaType = z.infer<typeof createShapeSchema>;

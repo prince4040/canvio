@@ -20,6 +20,25 @@ export const leaveRoomSchema = z.object({
 	meta: baseMeta.optional(),
 });
 
+export const shapePayloadMetaSchema = z.object({
+	version: z.number().positive(),
+});
+
+export const rectanglePayloadSchema = z.object({
+	type: z.literal("RECTANGLE"),
+	startX: z.number(),
+	startY: z.number(),
+	width: z.number(),
+	height: z.number(),
+	meta: shapePayloadMetaSchema,
+});
+
+export const createShapeSchema = z.object({
+	type: z.literal("SHAPE.CREATE"),
+	payload: z.discriminatedUnion("type", [rectanglePayloadSchema]),
+	meta: baseMeta.optional(),
+});
+
 export const incomingMessageSchema = z.discriminatedUnion("type", [
 	joinRoonSchema,
 	leaveRoomSchema,
