@@ -1,13 +1,13 @@
 export function isValidRequestId(
 	data: unknown,
-): data is { payload: { requestId: string | undefined } } {
+): data is { meta: { requestId: string | undefined } } {
 	return (
 		typeof data === "object" &&
 		data !== null &&
-		"payload" in data &&
-		typeof data.payload === "object" &&
-		data.payload !== null &&
-		"requestId" in data.payload &&
-		typeof data.payload.requestId === "string"
+		"meta" in data &&
+		typeof data.meta === "object" &&
+		data.meta !== null &&
+		"requestId" in data.meta &&
+		typeof data.meta.requestId === "string"
 	);
 }

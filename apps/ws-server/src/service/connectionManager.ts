@@ -50,22 +50,24 @@ export class ConnectionManger {
 		const socketId = this.addConnection();
 
 		this.socket.on("message", async (rawData) => {
-			const [parseError, data] = await withCatch(
-				JSON.parse(rawData.toString()),
-			);
+			let data: unknown;
 			let requestId: string | undefined;
-
-			if (isValidRequestId(data)) {
-				requestId = data.payload.requestId;
-			}
-
-			if (parseError) {
+			try {
+				data = JSON.parse(rawData.toString());
+			} catch {
+				if (isValidRequestId(data)) {
+					requestId = data.meta.requestId;
+				}
 				this.sendError({
 					code: "ERR_INVALID_FORMAT",
 					message: "invalid json format",
 					requestId,
 				});
 				return;
+			}
+
+			if (isValidRequestId(data)) {
+				requestId = data.meta.requestId;
 			}
 
 			const parsedResult = incomingMessageSchema.safeParse(data);
@@ -160,7 +162,7 @@ export class ConnectionManger {
 		const role = result.role;
 
 		this.addSocketToRoom(data.payload.roomId, socketId, role);
-		requestId && this.aknowledge(requestId);
+		if (requestId) this.aknowledge(requestId);
 	}
 
 	private sendError(payload: ErrorMessagePayloadSchemaType) {
