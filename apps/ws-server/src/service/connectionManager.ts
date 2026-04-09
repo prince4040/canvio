@@ -6,6 +6,7 @@ import {
 	type IncomingMessageSchemType,
 	incomingMessageSchema,
 	type JoinRoonSchemaType,
+	type LeaveRoomSchemaType,
 } from "@canvio/util/ws";
 import { WebSocket } from "ws";
 import { db } from "../db";
@@ -93,7 +94,27 @@ export class ConnectionManger {
 				this.handleJoinRoom(data, socketId, requestId);
 				break;
 			case "ROOM.LEAVE":
+				this.handleLeaveRoom(data, socketId, requestId);
 				break;
+		}
+	}
+
+	private handleLeaveRoom(
+		data: LeaveRoomSchemaType,
+		socketId: string,
+		requestId?: string,
+	) {
+		this.removeSocketFromRoom(data.payload.roomId, socketId);
+		requestId && this.aknowledge(requestId);
+	}
+
+	private removeSocketFromRoom(roomId: string, socketId: string) {
+		sockets.get(socketId)?.rooms.delete(roomId);
+
+		const roomMembers = roomSockets.get(roomId);
+		if (roomMembers) {
+			roomMembers.delete(socketId);
+			if (roomMembers.size === 0) roomSockets.delete(roomId);
 		}
 	}
 

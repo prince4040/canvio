@@ -13,7 +13,6 @@ wss.on("connection", async (socket, request) => {
 	const cookies = request.headers.cookie;
 	const parsedCookies = parse(cookies as string);
 	const token = parsedCookies.token;
-	console.log(token);
 
 	if (!token) return;
 
@@ -24,7 +23,6 @@ wss.on("connection", async (socket, request) => {
 	}
 
 	const userId = jwtResult.payload.userId;
-	console.log(userId);
 
 	const _ = new ConnectionManger(socket, userId);
 });
