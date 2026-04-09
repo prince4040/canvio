@@ -11,12 +11,13 @@ import {
 import { WebSocket } from "ws";
 import { db } from "../db";
 import { roomSockets, sockets, userSockets } from "./../store/data";
-import type { UserConnection, UserId } from "../types";
+import type { SocketId, UserConnection, UserId } from "../types";
 import { isValidRequestId } from "../utils";
 
 export class ConnectionManger {
 	private socket: WebSocket;
 	private userId: UserId;
+	private socketId?: SocketId;
 
 	constructor(socket: WebSocket, userId: UserId) {
 		this.socket = socket;
@@ -41,6 +42,7 @@ export class ConnectionManger {
 		}
 
 		userSockets.get(this.userId)?.add(socketId);
+		this.socketId = socketId;
 
 		return socketId;
 	}
@@ -84,6 +86,34 @@ export class ConnectionManger {
 			const parsedData = parsedResult.data;
 			this.handleIncomingMessage(parsedData, socketId, requestId);
 		});
+
+		this.socket.on("close", async () => {
+			this.handleDisconnect();
+		});
+	}
+
+	private handleDisconnect() {
+		this.cleanupConnection();
+	}
+
+	private cleanupConnection() {
+		const socketId = this.socketId;
+		if (!socketId) return;
+
+		const connection = sockets.get(socketId);
+		if (!connection) return;
+
+		for (const [roomId] of connection.rooms) {
+			this.removeSocketFromRoom(socketId, roomId);
+		}
+
+		sockets.delete(socketId);
+
+		const userSet = userSockets.get(connection.userId);
+		if (userSet) {
+			userSet?.delete(socketId);
+			if (userSet?.size === 0) userSockets.delete(this.userId);
+		}
 	}
 
 	private handleIncomingMessage(
