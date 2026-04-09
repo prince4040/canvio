@@ -8,7 +8,7 @@ import {
 	type JoinRoonSchemaType,
 	type LeaveRoomSchemaType,
 } from "@canvio/util/ws";
-import { WebSocket } from "ws";
+import { type RawData, WebSocket } from "ws";
 import { db } from "../db";
 import { roomSockets, sockets, userSockets } from "./../store/data";
 import type { SocketId, UserConnection, UserId } from "../types";
@@ -23,6 +23,53 @@ export class ConnectionManger {
 		this.socket = socket;
 		this.userId = userId;
 		this.init();
+	}
+
+	public init() {
+		// handle connection
+		const socketId = this.addConnection();
+
+		this.socket.on("message", async (rawData) =>
+			this.handleMessage(rawData, socketId),
+		);
+
+		this.socket.on("close", this.handleDisconnect.bind(this));
+	}
+
+	private handleMessage(rawData: RawData, socketId: string) {
+		let data: unknown;
+		let requestId: string | undefined;
+		try {
+			data = JSON.parse(rawData.toString());
+		} catch {
+			if (isValidRequestId(data)) {
+				requestId = data.meta.requestId;
+			}
+			this.sendError({
+				code: "ERR_INVALID_FORMAT",
+				message: "invalid json format",
+				requestId,
+			});
+			return;
+		}
+
+		if (isValidRequestId(data)) {
+			requestId = data.meta.requestId;
+		}
+
+		const parsedResult = incomingMessageSchema.safeParse(data);
+
+		if (!parsedResult.success) {
+			this.sendError({
+				code: "ERR_INVALID_FORMAT",
+				message: parsedResult.error.message,
+				requestId,
+			});
+			return;
+		}
+
+		const parsedData = parsedResult.data;
+		this.handleIncomingMessage(parsedData, socketId, requestId);
 	}
 
 	private addConnection() {
@@ -45,51 +92,6 @@ export class ConnectionManger {
 		this.socketId = socketId;
 
 		return socketId;
-	}
-
-	public init() {
-		// handle connection
-		const socketId = this.addConnection();
-
-		this.socket.on("message", async (rawData) => {
-			let data: unknown;
-			let requestId: string | undefined;
-			try {
-				data = JSON.parse(rawData.toString());
-			} catch {
-				if (isValidRequestId(data)) {
-					requestId = data.meta.requestId;
-				}
-				this.sendError({
-					code: "ERR_INVALID_FORMAT",
-					message: "invalid json format",
-					requestId,
-				});
-				return;
-			}
-
-			if (isValidRequestId(data)) {
-				requestId = data.meta.requestId;
-			}
-
-			const parsedResult = incomingMessageSchema.safeParse(data);
-
-			if (!parsedResult.success) {
-				this.sendError({
-					code: "ERR_INVALID_FORMAT",
-					message: parsedResult.error.message,
-					requestId,
-				});
-				return;
-			}
-
-			const parsedData = parsedResult.data;
-			this.handleIncomingMessage(parsedData, socketId, requestId);
-		});
-
-		this.socket.on("close", async () => {
-			this.handleDisconnect();
-		});
 	}
 
 	private handleDisconnect() {
