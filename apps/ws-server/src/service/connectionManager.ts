@@ -3,7 +3,6 @@ import { withCatch } from "@canvio/util/withCatch";
 import {
 	type AknowlegementSchemaType,
 	type ErrorMessagePayloadSchemaType,
-	type IncomingMessageSchemType,
 	incomingMessageSchema,
 	type JoinRoonSchemaType,
 	type LeaveRoomSchemaType,
@@ -69,7 +68,15 @@ export class ConnectionManger {
 		}
 
 		const parsedData = parsedResult.data;
-		this.handleIncomingMessage(parsedData, socketId, requestId);
+
+		switch (parsedData.type) {
+			case "ROOM.JOIN":
+				this.handleJoinRoom(parsedData, socketId, requestId);
+				break;
+			case "ROOM.LEAVE":
+				this.handleLeaveRoom(parsedData, socketId, requestId);
+				break;
+		}
 	}
 
 	private addConnection() {
@@ -115,21 +122,6 @@ export class ConnectionManger {
 		if (userSet) {
 			userSet?.delete(socketId);
 			if (userSet?.size === 0) userSockets.delete(this.userId);
-		}
-	}
-
-	private handleIncomingMessage(
-		data: IncomingMessageSchemType,
-		socketId: string,
-		requestId?: string,
-	) {
-		switch (data.type) {
-			case "ROOM.JOIN":
-				this.handleJoinRoom(data, socketId, requestId);
-				break;
-			case "ROOM.LEAVE":
-				this.handleLeaveRoom(data, socketId, requestId);
-				break;
 		}
 	}
 
