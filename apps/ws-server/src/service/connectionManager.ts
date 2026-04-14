@@ -144,7 +144,20 @@ export class ConnectionManger {
 			});
 		}
 
+		this.broadcast(roomId, data);
 		if (requestId) this.aknowledge(requestId);
+	}
+
+	private broadcast(roomId: string, payload: object) {
+		const socketIds = roomSockets.get(roomId);
+
+		socketIds?.forEach((socketId) => {
+			const socket = sockets.get(socketId)?.socket;
+
+			if (socket?.readyState === WebSocket.OPEN) {
+				socket.send(JSON.stringify(payload));
+			}
+		});
 	}
 
 	private addConnection() {
