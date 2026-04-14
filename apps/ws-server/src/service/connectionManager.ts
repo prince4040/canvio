@@ -2,6 +2,7 @@ import type { UserRoleType } from "@canvio/util/auth";
 import { withCatch } from "@canvio/util/withCatch";
 import {
 	type AknowlegementSchemaType,
+	type createShapeSchemaType,
 	type ErrorMessagePayloadSchemaType,
 	incomingMessageSchema,
 	type JoinRoonSchemaType,
@@ -76,7 +77,74 @@ export class ConnectionManger {
 			case "ROOM.LEAVE":
 				this.handleLeaveRoom(parsedData, socketId, requestId);
 				break;
+			case "SHAPE.CREATE":
+				this.handleCreateShape(parsedData, socketId, requestId);
+				break;
 		}
+	}
+
+	private handleCreateShape(
+		data: createShapeSchemaType,
+		socketId: SocketId,
+		requestId?: string,
+	) {
+		const roomId = data.meta?.roomId;
+
+		if (!roomId) {
+			this.sendError({
+				code: "ERR_INVALID_FORMAT",
+				message: "roomId is required",
+			});
+			return;
+		}
+
+		const role = sockets.get(socketId)?.rooms.get(roomId);
+
+		if (!role || (role !== "ADMIN" && role !== "WRITER")) {
+			this.sendError({
+				code: "ERR_UNAUTHORIZED",
+				message: "user is not authorised to perform this action",
+				requestId,
+			});
+			return;
+		}
+
+		switch (data.payload.type) {
+			case "RECTANGLE":
+				this.handleCreateRectangle(data, roomId, requestId);
+		}
+	}
+
+	private async handleCreateRectangle(
+		data: createShapeSchemaType,
+		roomId: string,
+		requestId?: string,
+	) {
+		const { type, startX, startY, width, height } = data.payload;
+
+		const [error, _] = await withCatch(
+			db.canvas.addShape(
+				{
+					type,
+					startX,
+					startY,
+					width,
+					height,
+				},
+				this.userId,
+				roomId,
+			),
+		);
+
+		if (error) {
+			this.sendError({
+				code: "ERR_SOMETHING_WENT_WRONG",
+				message: "something went wrong on the server",
+				requestId,
+			});
+		}
+
+		if (requestId) this.aknowledge(requestId);
 	}
 
 	private addConnection() {

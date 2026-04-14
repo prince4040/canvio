@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const baseMeta = z.object({
 	requestId: z.string().optional(),
+	roomId: z.string().optional(),
 });
 
 export const joinRoonSchema = z.object({
@@ -42,6 +43,7 @@ export const createShapeSchema = z.object({
 export const incomingMessageSchema = z.discriminatedUnion("type", [
 	joinRoonSchema,
 	leaveRoomSchema,
+	createShapeSchema,
 ]);
 
 export const errorCodes = z
