@@ -6,6 +6,12 @@
 		"useIgnoreFile": true,
 		"defaultBranch": "main"
 	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
+
 	"files": {
 		"ignoreUnknown": false
 	},
