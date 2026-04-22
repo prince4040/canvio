@@ -31,11 +31,13 @@ export function HydrateClient(props: { children: ReactNode }) {
 	);
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: needed
 export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(
 	queryOptions: T,
 ) {
 	const queryClient = getQueryClient();
 	if (queryOptions.queryKey[1]?.type === "infinite") {
+		// biome-ignore lint/suspicious/noExplicitAny: needed
 		void queryClient.prefetchInfiniteQuery(queryOptions as any);
 	} else {
 		void queryClient.prefetchQuery(queryOptions);
