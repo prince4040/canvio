@@ -17,15 +17,17 @@
 	"dependencies": {
 		"@canvio/database": "*",
 		"@canvio/env": "*",
+		"@canvio/util": "*",
 		"@trpc/server": "^11.16.0",
 		"cookie": "^1.1.1",
-		"@canvio/util": "*"
+		"cors": "^2.8.6"
 	},
 	"devDependencies": {
 		"@canvio/biome": "*",
 		"@canvio/trpc": "*",
 		"@repo/typescript-config": "*",
 		"@types/cookie": "^1.0.0",
+		"@types/cors": "^2.8.19",
 		"nodemon": "^3.1.14",
 		"typescript": "^6.0.2"
 	}

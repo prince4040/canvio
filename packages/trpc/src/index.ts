@@ -12,7 +12,8 @@ export const appRouter = router({
 		)
 		.query(async () => {
 			return {
-				sucess: true,
+				success: true,
+				msg: "fatched sucessfully",
 			};
 		}),
 	auth: authRouter,

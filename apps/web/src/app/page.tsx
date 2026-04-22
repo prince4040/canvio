@@ -1,7 +1,12 @@
-import { getQueryClient, trpc } from "@/trpc/server";
+import { Greet } from "@/components/Greet";
+import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 
 export default async function Home() {
-	const queryClient = getQueryClient();
-	// await queryClient.prefetchQuery(trpc);
-	return <div>Hi there</div>;
+	prefetch(trpc.test.queryOptions({ msg: "hello" }));
+
+	return (
+		<HydrateClient>
+			<Greet />
+		</HydrateClient>
+	);
 }
