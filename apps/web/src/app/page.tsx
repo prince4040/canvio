@@ -1,18 +1,7 @@
-"use client";
+import { getQueryClient, trpc } from "@/trpc/server";
 
-import { Button } from "@repo/ui/components/button";
-
-export default function Home() {
-	return (
-		<div>
-			<Button
-				className="cursor-pointer"
-				onClick={() => {
-					alert("hello");
-				}}
-			>
-				click me
-			</Button>
-		</div>
-	);
+export default async function Home() {
+	const queryClient = getQueryClient();
+	// await queryClient.prefetchQuery(trpc);
+	return <div>Hi there</div>;
 }
